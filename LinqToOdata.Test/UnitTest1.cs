@@ -21,11 +21,8 @@ public class UnitTest1
     public void Test1()
     {
         var b = new QueryBuilder<TestModel>();
-        var a = b.Where(s => s.Name == "name").Select(s => new {Test = s.Name, Test1 = s.Name} );
-        
+        var a = b.Where(s => s.Name == "name").Select(x => x.Name);
 
-
-
-
+        var c = 1;
     }
 }
