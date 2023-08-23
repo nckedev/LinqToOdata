@@ -13,13 +13,6 @@ namespace LinqToOdata;
  * $take -> Take
  *
  */
-public class Class1
-{
-    public Class1()
-    {
-        var a = new List<int>().Where(x => x == 1);
-    }
-}
 
 public class QueryBuilder<TModel> where TModel : class
 {
@@ -37,20 +30,11 @@ public class QueryBuilder<TModel> where TModel : class
         return this;
     }
 
-    internal void AddString(string s)
+    public QueryBuilder<TResult> Select<TResult>(Expression<Func<TModel, TResult>> selector) where TResult : class
     {
-        _queryStringBuilder.Append(s);
+        return new QueryBuilder<TResult>();
     }
-}
 
-
-internal static class Parser
-{
-    [Pure]
-    internal static string ParseExpression(Expression expr, StringBuilder stringBuilder)
-    {
-        return "";
-    }
 }
 
 internal static class Token
