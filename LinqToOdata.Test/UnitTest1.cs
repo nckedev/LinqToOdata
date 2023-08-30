@@ -22,7 +22,7 @@ public class UnitTest1
     public void Test1()
     {
         var b = new QueryBuilder<TestModel>();
-        var a = b.Where(s => s.Name == "name").Select(x => x.Name);
+        var a = b.Where(s => s.Name == "name");
 
         var c = 1;
     }
