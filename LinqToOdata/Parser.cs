@@ -16,11 +16,18 @@ internal static class Parser
             MemberExpression expr => ParseMemberExpression(expr, stringBuilder),
             _ => throw new Exception("End of parser")
         };
-        return "";
     }
 
     private static string ParseBinaryExpression(Expression expr, StringBuilder stringBuilder)
     {
+        if (expr is BinaryExpression binaryExpression)
+        {
+            var left = ParseExpression(binaryExpression.Left, stringBuilder);
+            var op = ConvertExpressionType(binaryExpression.NodeType);
+            var right = ParseExpression(binaryExpression.Right, stringBuilder);
+            return left + " " + op + " " + right;
+        }
+
         return "";
     }
 
@@ -31,13 +38,20 @@ internal static class Parser
 
     private static string ParseConstantExpression(Expression expr, StringBuilder stringBuilder)
     {
-        return "";
+        if (expr is ConstantExpression constantExpression)
+        {
+            if (expr.Type == typeof(string))
+                return WrapInSingleQuotes(constantExpression.Value?.ToString());
+
+            return constantExpression.Value?.ToString();
+        }
+
+        throw new Exception("not a constant expression");
     }
 
     private static string ParseMemberExpression(MemberExpression expr, StringBuilder stringBuilder)
     {
-        stringBuilder.Append(GetNameOrAttributeName(expr.Member));
-        return stringBuilder.ToString();
+        return GetNameOrAttributeName(expr.Member);
     }
 
     /// <summary>
@@ -69,6 +83,8 @@ internal static class Parser
         var attr = memberInfo.GetCustomAttribute<EntityPropertyNameAttribute>();
         return attr is not null ? attr.EntityPropertyName : memberInfo.Name;
     }
+
+    private static string WrapInSingleQuotes(string str) => "'" + str + "'";
 
 
     private static string ConvertExpressionType(ExpressionType type) => type switch

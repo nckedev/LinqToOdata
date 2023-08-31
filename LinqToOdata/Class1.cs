@@ -34,9 +34,9 @@ public class QueryBuilder<TModel> where TModel : class
     }
 
     //todo ska returna string
-    public List<string> ToQuery()
+    public string ToQuery()
     {
-        return _list;
+        return _list.Aggregate("", (current, str) => current + str);
     }
 
 
